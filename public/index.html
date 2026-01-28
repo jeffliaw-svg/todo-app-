@@ -612,7 +612,7 @@
       localStorage.removeItem(CONFIG_KEY);
       supabaseUrlInput.value = '';
       supabaseKeyInput.value = '';
-      supabase = null;
+      db = null;
       mainApp.classList.remove('visible');
       configPanel.style.display = 'block';
       setConnectionStatus('disconnected', 'Configuration cleared');
@@ -622,10 +622,10 @@
       setConnectionStatus('loading', 'Connecting to Supabase...');
 
       try {
-        supabase = window.supabase.createClient(url, key);
+        db = window.supabase.createClient(url, key);
 
         // Test connection by querying tasks
-        const { data, error } = await supabase.from('tasks').select('id').limit(1);
+        const { data, error } = await db.from('tasks').select('id').limit(1);
 
         if (error) {
           throw error;
@@ -699,7 +699,7 @@
 
     async function loadTasks() {
       try {
-        const { data, error } = await supabase
+        const { data, error } = await db
           .from('tasks')
           .select('*')
           .order('created_at', { ascending: false });
@@ -714,7 +714,7 @@
 
     async function saveTask(taskData) {
       try {
-        const { data, error } = await supabase
+        const { data, error } = await db
           .from('tasks')
           .insert([taskData])
           .select()
@@ -730,7 +730,7 @@
 
     async function updateTask(id, updates) {
       try {
-        const { data, error } = await supabase
+        const { data, error } = await db
           .from('tasks')
           .update(updates)
           .eq('id', id)
@@ -747,7 +747,7 @@
 
     async function deleteTaskFromDb(id) {
       try {
-        const { error } = await supabase
+        const { error } = await db
           .from('tasks')
           .delete()
           .eq('id', id);
