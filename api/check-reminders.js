@@ -5,7 +5,7 @@ import { createClient } from '@supabase/supabase-js';
 import twilio from 'twilio';
 
 export const config = {
-  runtime: 'nodejs18.x',
+  runtime: 'nodejs',
 };
 
 export default async function handler(req, res) {
